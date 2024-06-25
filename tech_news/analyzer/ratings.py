@@ -9,9 +9,6 @@ def top_5_categories():
         {"$sort": {"count": -1, "_id": 1}},
         {"$limit": 5}
     ]
-    
     categories = list(db.news.aggregate(pipeline))
-    
     top_categories = [category["_id"] for category in categories]
-    
     return top_categories
