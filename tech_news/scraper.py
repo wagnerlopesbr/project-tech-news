@@ -1,8 +1,23 @@
 # WL First Commit
+import requests
+import time
+
+
 # Requisito 1
 def fetch(url):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    header = {
+        "user-agent": "Fake user-agent"
+    }
+    try:
+        response = requests.get(url, headers=header, timeout=3)
+        if response.status_code == 200:
+            return response.text
+        else:
+            return None
+    except requests.ReadTimeout:
+        return None
+    finally:
+        time.sleep(1)
 
 
 # Requisito 2
