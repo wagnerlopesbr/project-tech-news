@@ -1,6 +1,7 @@
 # WL First Commit
 import requests
 import time
+from parsel import Selector
 
 
 # Requisito 1
@@ -22,8 +23,9 @@ def fetch(url):
 
 # Requisito 2
 def scrape_updates(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    selector = Selector(text=html_content)
+    return [news.css("a::attr(href)").get() for news
+            in selector.css(".cs-overlay")]
 
 
 # Requisito 3
