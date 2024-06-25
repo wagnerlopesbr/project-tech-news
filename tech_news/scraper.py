@@ -2,6 +2,7 @@
 import requests
 import time
 from parsel import Selector
+from tech_news.database import create_news
 
 
 # Requisito 1
@@ -56,5 +57,15 @@ def scrape_news(html_content):
 
 # Requisito 5
 def get_tech_news(amount):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    html_content = fetch("https://blog.betrybe.com/")
+    news_list = []
+    while len(news_list) < amount:
+        news = scrape_updates(html_content)
+        news_list.extend([scrape_news(fetch(new)) for new in news])
+        next_page = scrape_next_page_link(html_content)
+        if next_page:
+            html_content = fetch(next_page)
+        else:
+            break
+    create_news(news_list[:amount])
+    return news_list[:amount]
